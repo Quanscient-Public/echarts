@@ -105,11 +105,6 @@ class OptionManager {
             });
         }
 
-        // Caution: some series modify option data, if do not clone,
-        // it should ensure that the repeat modify correctly
-        // (create a new object when modify itself).
-        rawOption = clone(rawOption);
-
         // FIXME
         // If some property is set in timeline options or media option but
         // not set in baseOption, a warning should be given.
@@ -164,14 +159,13 @@ class OptionManager {
         this._mediaDefault = optionBackup.mediaDefault;
         this._currentMediaIndices = [];
 
-        return clone(isRecreate
+        return isRecreate
             // this._optionBackup.baseOption, which is created at the first `setOption`
             // called, and is merged into every new option by inner method `mergeToBackupOption`
             // each time `setOption` called, can be only used in `isRecreate`, because
             // its reliability is under suspicion. In other cases option merge is
             // performed by `model.mergeOption`.
-            ? optionBackup.baseOption : this._newBaseOption
-        );
+            ? optionBackup.baseOption : this._newBaseOption;
     }
 
     getTimelineOption(ecModel: GlobalModel): ECUnitOption {
